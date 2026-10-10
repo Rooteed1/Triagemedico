@@ -334,11 +334,25 @@ def render_curves(score: float) -> None:
 
 # ---------- App ----------
 def main() -> None:
+    # Valor inicial del nombre (solo la primera vez que se abre la app)
+    if "patient_name" not in st.session_state:
+        st.session_state["patient_name"] = "Paciente demo"
+
+    # Limpia el nombre después de guardar (debe ocurrir antes de crear el widget)
+    if st.session_state.pop("clear_patient", False):
+        st.session_state["patient_name"] = ""
+
     with st.sidebar:
         st.header("Paciente")
-        patient_name = st.text_input("Nombre o identificador", value="Paciente demo")
+        patient_name = st.text_input("Nombre o identificador", key="patient_name")
         save_enabled = st.checkbox("Guardar en historial", value=True)
-        st.caption("Si Supabase está configurado se guarda ahí; si no, en un archivo local.")
+        st.caption("Si Supabase está configurado se guarda ahí; si no, en un archivo local. "
+                   "Al guardar, el nombre se borra del campo.")
+
+    # Muestra el aviso pendiente del guardado anterior
+    pending = st.session_state.pop("pending_toast", None)
+    if pending:
+        st.toast(pending, icon="✅")
 
     st.markdown(
         '<div class="topbar"><div class="cross"></div><div><p class="brand">TriageAI</p>'
@@ -369,7 +383,7 @@ def main() -> None:
             if save_enabled:
                 record = {
                     "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "patient_name": patient_name,
+                    "patient_name": patient_name.strip() or "Sin identificar",
                     "temperature": temperature,
                     "heart_rate": int(heart_rate),
                     "pain": int(pain),
@@ -377,10 +391,13 @@ def main() -> None:
                     "priority_label": result["label"],
                     "summary": result["summary"],
                 }
-                if save_record_to_history(record):
-                    st.toast("Resultado guardado en Supabase.", icon="✅")
-                else:
-                    st.toast("Resultado guardado en el historial local.", icon="✅")
+                in_supabase = save_record_to_history(record)
+                st.session_state["pending_toast"] = (
+                    "Resultado guardado en Supabase." if in_supabase
+                    else "Resultado guardado en el historial local."
+                )
+                st.session_state["clear_patient"] = True
+                st.rerun()
 
         result = st.session_state.get("last_result")
         with result_col:
