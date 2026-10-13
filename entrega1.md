@@ -20,7 +20,7 @@ TriageAI es un prototipo académico que explora cómo presentar esa evaluación 
 
 El programa es una aplicación web desarrollada en Python con Streamlit. Recibe temperatura corporal en °C, frecuencia cardíaca en pulsaciones por minuto y nivel de dolor de 0 a 10. Las mediciones se ingresan manualmente en controles numéricos. La interfaz muestra los campos en tarjetas separadas.
 
-Con esas entradas, la aplicación combina lógica difusa y reglas explícitas para estimar un porcentaje de urgencia y una categoría de prioridad. Presenta un resumen que señala por separado los hallazgos de temperatura, pulso y dolor, y una gráfica de prioridad. Puede guardar registros en un historial CSV local; también incluye integración opcional con Supabase si se configura. El prototipo actual emplea reglas definidas explícitamente; no entrena automáticamente un modelo con los registros.
+Con esas entradas, la aplicación combina lógica difusa y reglas explícitas para estimar un porcentaje de urgencia y una categoría de prioridad. Presenta un resumen que señala por separado los hallazgos de temperatura, pulso y dolor, y una gráfica de prioridad. Cualquier visitante puede calcular y analizar sin iniciar sesión; solo un usuario autenticado puede guardar atenciones y consultar su propio historial en Supabase. El prototipo actual emplea reglas definidas explícitamente; no entrena automáticamente un modelo con los registros.
 
 ## 3. Rama de IA
 
@@ -50,10 +50,10 @@ Los rangos de pulso están referidos a adultos en reposo. La aplicación informa
 | Gráficas | Matplotlib | 3.8.0 o superior |
 | Configuración | python-dotenv | 1.0.1 o superior |
 | Datos | pandas | 2.1.0 o superior |
-| Persistencia en nube | Supabase Python SDK | 2.0.0 o superior; opcional, requiere credenciales propias |
+| Persistencia y autenticación | Supabase Python SDK | 2.0.0 o superior; requiere proyecto Supabase y clave pública anon/publishable |
 | Navegador | Chrome, Edge o Firefox actualizado | Necesario para abrir la interfaz local |
 
-Las dependencias de Python se instalan desde `requirements.txt`. El historial local requiere permiso de escritura en la carpeta `data/`. Para guardar en Supabase también se requiere configurar `SUPABASE_URL` y `SUPABASE_KEY` en el entorno; este servicio no es necesario para ejecutar la versión local.
+Las dependencias de Python se instalan desde `requirements.txt`. Para habilitar registro, inicio de sesión y guardado se requiere configurar `SUPABASE_URL` y `SUPABASE_ANON_KEY` y ejecutar `supabase/triage_records.sql` en Supabase. Sin esa configuración, las mediciones y el análisis continúan disponibles, pero no se guarda información. No se utiliza CSV local ni se debe configurar una clave `service_role` en la aplicación.
 
 ## 6. Instrucciones de instalación y ejecución
 
@@ -115,8 +115,9 @@ El prototipo local y su flujo principal están implementados. La compilación de
 
 | Entregable | Ubicación (enlace o ruta) | Listo (Sí/No) |
 |---|---|---|
-| Código completo en repositorio | Código disponible localmente en [app.py](app.py); falta inicializar/publicar un repositorio Git | No |
+| Código completo en repositorio | [Repositorio GitHub](https://github.com/Rooteed1/Triagemedico.git) y código local en [app.py](app.py) | Sí |
+| Aplicación web funcionando | La aplicación se ejecuta mediante Streamlit en `http://localhost:8501` o https://triagemed.streamlit.app/#triage-ai | Sí |
 | Archivo de dependencias | [requirements.txt](requirements.txt) | Sí |
 | Datos de prueba | No hay un conjunto separado de datos de prueba. `data/triage_history.csv` es el historial generado por la aplicación, no un dataset de prueba | No |
-| Historial de commits de todos los integrantes | No existe repositorio Git (`.git`) ni historial de commits en la carpeta del proyecto | No |
+| Historial de commits de todos los integrantes | Existe historial de commits en el repositorio Git; el proyecto actualmente cuenta con commits locales y remotos | Sí |
 | Créditos y licencias en el README | [README.md](README.md); falta agregar créditos y licencias | No |

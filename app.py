@@ -5,6 +5,7 @@ import binascii
 import json
 import logging
 import os
+from datetime import datetime
 from html import escape
 
 import matplotlib.pyplot as plt
@@ -262,6 +263,20 @@ def load_user_history(client: Client, user_id: str) -> list[dict]:
     return response.data or []
 
 
+def format_history_datetime(value: object) -> str:
+    if value in (None, "", "-"):
+        return "-"
+    try:
+        if isinstance(value, str):
+            value = value.replace("Z", "+00:00")
+            dt = datetime.fromisoformat(value)
+        else:
+            dt = value
+        return dt.strftime("%d/%m/%Y %H:%M")
+    except Exception:
+        return str(value)
+
+
 def render_history_table(client: Client, user_id: str) -> None:
     try:
         history = load_user_history(client, user_id)
@@ -275,7 +290,7 @@ def render_history_table(client: Client, user_id: str) -> None:
         return
     rows = [
         {
-            "Fecha": r.get("created_at", "-"),
+            "Fecha": format_history_datetime(r.get("created_at", "-")),
             "Paciente": r.get("patient_name", "-"),
             "Temp. (°C)": r.get("temperature", "-"),
             "FC (ppm)": r.get("heart_rate", "-"),
