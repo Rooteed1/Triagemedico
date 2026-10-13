@@ -1,0 +1,17 @@
+### Prompts más importantes utilizados en TriageAI
+
+Durante el desarrollo de TriageAI utilizamos inteligencia artificial como apoyo para la programación, solución de errores y mejora del sistema. Los prompts más relevantes fueron los siguientes:
+
+1. **Creación del sistema:** Solicitar el desarrollo de un prototipo web de triaje médico utilizando Python, Streamlit y lógica difusa con scikit-fuzzy, capaz de calcular un porcentaje de urgencia a partir de temperatura, frecuencia cardíaca y nivel de dolor.
+
+2. **Configuración del proyecto:** Solicitar ayuda para crear la estructura de archivos, instalar dependencias, configurar el entorno virtual y solucionar errores relacionados con bibliotecas como scipy y networkx.
+
+3. **Mejora de la interfaz:** Solicitar un rediseño visual más limpio, moderno y organizado, separando las mediciones en tarjetas y mostrando los resultados de prioridad de forma clara.
+
+4. **Implementación de rangos clínicos:** Solicitar la incorporación de rangos de referencia para adultos en reposo y reglas adicionales que permitieran identificar temperaturas anormales, alteraciones cardíacas y niveles elevados de dolor.
+
+5. **Corrección de errores en la clasificación:** Solicitar la revisión del caso de 33 °C, 59 pulsaciones por minuto y dolor 5/10, que inicialmente generaba 0 % de urgencia y prioridad baja. Después de corregir la lógica, el sistema obtuvo 85 % y prioridad alta.
+
+6. **Verificación del funcionamiento:** Solicitar pruebas con valores normales, moderados y extremos para comprobar el comportamiento del sistema e identificar posibles errores en los resultados.
+
+Estos prompts fueron importantes porque nos permitieron pasar de una idea inicial a una aplicación funcional, además de identificar y corregir problemas que no eran evidentes durante las primeras versiones. Aprendimos que la inteligencia artificial facilita el desarrollo, pero sus respuestas deben revisarse y comprobarse mediante pruebas antes de integrarlas al proyecto.
